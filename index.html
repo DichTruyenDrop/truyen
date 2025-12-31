@@ -3,46 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chap 84</title>
+<title>Chapter 84</title>
 
 <style>
+.to-top{
+    position:fixed;
+    right:16px;
+    bottom:90px;
+    width:44px;
+    height:44px;
+    background:#2196f3;
+    color:#fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    cursor:pointer;
+    display:none;
+    z-index:150;
+}
+.to-top.show{display:flex}
+
 body{
     margin:0;
-    background:#000;
+    background:#111;
+    color:#fff;
+    font-family:Arial, sans-serif;
 }
+a{text-decoration:none;color:inherit}
+
+/* ===== KHỐI TRÊN ===== */
+.top-box{
+    max-width:900px;
+    margin:20px auto;
+    padding:15px;
+    background:#1c1c1c;
+    border-radius:6px;
+}
+.breadcrumb{font-size:13px;color:#aaa;}
+.title{text-align:center;font-size:22px;margin:10px 0;cursor:pointer;}
+.chapter{text-align:center;font-size:18px;}
+.update{text-align:center;font-size:13px;color:#aaa;margin:8px 0;}
+.tip{
+    background:#cfe9ee;
+    color:#000;
+    padding:10px;
+    border-radius:6px;
+    text-align:center;
+    font-size:14px;
+    margin:10px 0;
+}
+
+/* nút trên */
+.top-nav{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+.top-nav a{
+    padding:8px 14px;
+    border-radius:6px;
+    font-size:14px;
+    cursor:pointer;
+}
+.prev{background:#2196f3;}
+.next{background:#888;}
+
+/* ===== ẢNH ===== */
 img{
     width:100%;
     max-width:900px;
     display:block;
-    margin:auto;
+    margin:10px auto;
 }
 
-/* khung điều hướng */
-.nav{
-    max-width:900px;
-    margin:30px auto;
+/* ===== BOTTOM BAR ===== */
+.bottom-bar{
+    position:fixed;
+    bottom:-80px;
+    left:0;
+    width:100%;
+    background:#000;
     display:flex;
     justify-content:center;
-    gap:20px;
+    align-items:center;
+    gap:14px;
+    padding:10px 0;
+    transition:.3s;
 }
-.nav a{
-    background:#2196f3;
-    color:#fff;
-    text-decoration:none;
-    padding:10px 18px;
+.bottom-bar.show{bottom:0;}
+.bottom-bar a{font-size:22px;}
+.chapter-box{
+    background:#2a2a2a;
+    padding:6px 16px;
     border-radius:6px;
     font-size:14px;
-    min-width:120px;
-    text-align:center;
-}
-.nav a:hover{
-    opacity:.9;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
+<!-- NÚT LÊN ĐẦU -->
+<div class="to-top" onclick="lenDau()">⬆</div>
+
+<div class="top-box">
+    <div class="breadcrumb">
+        <a href="https://dichtruyendrop.github.io/DichTruyenDrop/">Trang Chủ</a> /
+        After Transformation / Chương 84
+    </div>
+
+    <div class="title" onclick="goStory()">
+        After Transformation, Mine And Her Wild Fantasy
+    </div>
+
+    <div class="chapter">- Chapter 84 -</div>
+    <div class="update">(Cập nhật: 19/12/2025)</div>
+
+    <div class="tip">Dùng ← → để chuyển chapter</div>
+
+    <div class="top-nav">
+        <a class="prev" onclick="chapTruoc()">← Chap Trước</a>
+        <a class="next" onclick="chapSau()">Chap Sau →</a>
+    </div>
+</div>
+
+<!-- ===== ẢNH ===== -->
 <img src="0.jpg">
 <img src="1.jpg">
 <img src="2.jpg">
@@ -58,10 +146,56 @@ img{
 <img src="12.jpg">
 <img src="13.jpg">
 
-<div class="nav">
-    <a href="https://dichtruyendrop.github.io/After-Transformation-Mine-And-Her-Wild-Fantasy/">← Chap Trước</a>
-    <a href="https://dichtruyendrop.github.io/Chapter85/">Chap Sau →</a>
+
+<!-- ===== BOTTOM BAR ===== -->
+<div class="bottom-bar" id="bar">
+    <a href="https://dichtruyendrop.github.io/DichTruyenDrop/">🏠</a>
+    <a onclick="chapTruoc()">⬅</a>
+
+    <div class="chapter-box">
+        Chapter 84
+    </div>
+
+    <a onclick="chapSau()">➡</a>
 </div>
+
+<script>
+const CHAP_HIEN_TAI = 84;
+
+/* lưu chap */
+localStorage.setItem("lastChap", CHAP_HIEN_TAI);
+
+/* điều hướng */
+function chapTruoc(){
+    localStorage.setItem("lastChap", CHAP_HIEN_TAI-1);
+    location.href="https://dichtruyendrop.github.io/After-Transformation-Mine-And-Her-Wild-Fantasy/";
+}
+function chapSau(){
+    localStorage.setItem("lastChap", CHAP_HIEN_TAI+1);
+    location.href="https://dichtruyendrop.github.io/Chapter85/";
+}
+function goStory(){
+    location.href="https://dichtruyendrop.github.io/After-Transformation-Mine-And-Her-Wild-Fantasy/";
+}
+
+/* scroll */
+window.addEventListener("scroll",()=>{
+    const bar=document.getElementById("bar");
+    const y=scrollY;
+    const max=document.body.scrollHeight-innerHeight;
+
+    if(y<80 || y>max-120) bar.classList.add("show");
+    else bar.classList.remove("show");
+
+    const btn=document.querySelector(".to-top");
+    if(y>400) btn.classList.add("show");
+    else btn.classList.remove("show");
+});
+
+function lenDau(){
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
 
 </body>
 </html>
